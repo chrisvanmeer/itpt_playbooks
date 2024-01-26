@@ -1,0 +1,16 @@
+---
+- name: ITPT - Prep day #1
+  hosts: all
+
+  tasks:
+    - name: Ensure exercises directory
+      ansible.builtin.file:
+        name: "{{ ansible_user_dir }}/exercises"
+        state: directory
+        mode: '0755'
+    - name: Ensure day 1 content
+      ansible.builtin.file:
+        name: "{{ ansible_user_dir }}/exercises/day{{ item }}"
+        state: directory
+        mode: '0755'
+      with_sequence: start=1 end=6
