@@ -1,0 +1,25 @@
+---
+- name: Create inventory for the trainer
+  hosts: localhost
+  connection: local
+
+  # This playbook generates an inventory based on the extra variable 'gurus'
+  # that needs to be specified when running this playbook.
+
+  tasks:
+    - name: Assert that guru count is defined
+      ansible.builtin.assert:
+        that:
+          - gurus is defined
+          - gurus | int > 0
+        fail_msg: "Please specify the number of gurus by running the playbook with -e 'gurus=n'"
+
+    - name: Ensure inventory
+      ansible.builtin.template:
+        src: inventory.j2
+        dest: ../inventory
+        owner: guru00
+        group: training
+        mode: '0644'
+      vars:
+        hostnum: 20  # This has to be the same value as specified in the deployment.yml

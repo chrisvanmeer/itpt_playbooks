@@ -1,0 +1,9 @@
+[trainer]
+guru00 ansible_host=10.0.0.{{ hostnum }}
+
+[gurus]
+{% set count = namespace(value=1) %}
+{% for i in range(0, gurus | int) %}
+guru{{ '%02d' % count.value }} ansible_host=10.0.{{ count.value }}.{{ hostnum }} ansible_ssh_user=guru{{ '%02d' % count.value }}
+{% set count.value = count.value + 1 -%}
+{% endfor %}
